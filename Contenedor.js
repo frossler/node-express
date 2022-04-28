@@ -73,13 +73,13 @@ class Contenedor {
 
 // Instancio y guardo los productos nuevos
 const contenedor = new Contenedor()
-// contenedor.save('cartuchera', 100, 'www.libreria.com', contenedor)
-// contenedor.save('lapiz', 20, 'www.libreria.com', contenedor)
-// contenedor.save('hoja', 5, 'www.libreria.com',contenedor)
+contenedor.save('cartuchera', 100, 'www.libreria.com', contenedor)
+contenedor.save('lapiz', 20, 'www.libreria.com', contenedor)
+contenedor.save('hoja', 5, 'www.libreria.com',contenedor)
 //Obtengo todos los productos
 // contenedor.getAll()
 //Obtengo el producto con ID 2
-contenedor.getByID(2)
+// contenedor.getByID(2)
 //Elimino el producto con ID 2
 // contenedor.deleteById(2)
 //Metodo para borrar todo
