@@ -6,8 +6,6 @@ class Contenedor {
 
         this.fileName = nombreArchivo;
         this.contenido = [];
-
-    //  obtengo el contenido del archivo al instanciar la clase
         this.leerArchivo()
 
     }
@@ -51,12 +49,9 @@ class Contenedor {
 
     save(producto) {
 
-        //  obtengo ultimo id + 1
         const id = this.contenido.length + 1;
         producto["id"] = id;
-        //  actualizo el contenido con el nuevo producto
         this.contenido.push(producto);
-        //  Grabo el archivo nuevamente
         this.escribirArchivo(this.contenido);
 
         return `El id del objeto añadido es ${id}`
@@ -77,37 +72,4 @@ class Contenedor {
 
 }
 
-
-const contenedor = new Contenedor('./products.txt');
-
-// contenedor.save({
-//     title: "escuadra",
-//     price: 80.20,
-//     thumbnail: "escuadra.jpg"
-// });
-
-// contenedor.save({
-//     title: "regla",
-//     price: 141.23,
-//     thumbnail: "regla.jpg"
-// });
-
-// contenedor.save({
-//     title: "compas",
-//     price: 11.23,
-//     thumbnail: "compas.jpg"
-// });
-
-// contenedor.save({
-//     title: "transportador",
-//     price: 16.23,
-//     thumbnail: "transportador.jpg"
-// });
-
-// contenedor.save({
-//     title: "lapicera",
-//     price: 1.23,
-//     thumbnail: "lapicera.jpg"
-// });
-
-console.log('Todos los productos',contenedor.getAll());
+module.exports = Contenedor ;
