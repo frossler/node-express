@@ -1,62 +1,43 @@
 [
-    {
-        "title": "escuadra",
-        "price": 80.2,
-        "thumbnail": "escuadra.jpg",
-        "id": 1
-    },
-    {
-        "title": "regla",
-        "price": 141.23,
-        "thumbnail": "regla.jpg",
-        "id": 2
-    },
-    {
-        "title": "compas",
-        "price": 11.23,
-        "thumbnail": "compas.jpg",
-        "id": 3
-    },
-    {
-        "title": "transportador",
-        "price": 16.23,
-        "thumbnail": "transportador.jpg",
-        "id": 4
-    },
-    {
-        "title": "lapicera",
-        "price": 1.23,
-        "thumbnail": "lapicera.jpg",
-        "id": 5
-    },
-    {
-        "title": "escuadra",
-        "price": 80.2,
-        "thumbnail": "escuadra.jpg",
-        "id": 6
-    },
-    {
-        "title": "regla",
-        "price": 141.23,
-        "thumbnail": "regla.jpg",
-        "id": 7
-    },
-    {
-        "title": "compas",
-        "price": 11.23,
-        "thumbnail": "compas.jpg",
-        "id": 8
-    },
-    {
-        "title": "transportador",
-        "price": 16.23,
-        "thumbnail": "transportador.jpg",
-        "id": 9
-    },
-    {
-        "title": "lapicera",
-        "price": 1.23,
-        "thumbnail": "lapicera.jpg",
-        "id": 10
-    }
+  {
+    "title": "Hola",
+    "price": 500,
+    "thumbnail": "lognstring uurl",
+    "id": 5
+  },
+  {
+    "title": "Hola2",
+    "price": 500,
+    "thumbnail": "lognstring uurl",
+    "id": 6
+  },
+  {
+    "id": 7,
+    "title": "hola",
+    "thumbnail": "lognstring uurl",
+    "price": 5550
+  },
+  {
+    "title": "chau",
+    "price": 500,
+    "thumbnail": "lognstring uurl",
+    "id": 8
+  },
+  {
+    "title": "chau",
+    "price": 5550,
+    "thumbnail": "lognstring uurl",
+    "id": 9
+  },
+  {
+    "title": "chau",
+    "price": 5550,
+    "id": 10
+  },
+  {
+    "title": "chau",
+    "price": 5550,
+    "thumbnail": "lognstring uurl",
+    "id": 11
+  }
 ]
