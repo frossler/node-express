@@ -10,13 +10,13 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 app.engine(
-	'hbs',
-	handlebars({
-		layoutsDir: __dirname + '/views/layouts',
-		partialsDir: __dirname + '/views/partials',
-		defaultLayout: 'index',
-		extname: 'hbs',
-	})
+  'hbs',
+  handlebars({
+    layoutsDir: __dirname + '/views/layouts',
+    partialsDir: __dirname + '/views/partials',
+    defaultLayout: 'index',
+    extname: 'hbs',
+  })
 );
 
 app.set('view engine', 'hbs');
@@ -28,56 +28,56 @@ app.use(express.urlencoded({ extended: true }));
 
 const products = new Productos();
 
-const mensajes = new Mensajes('mensajes.json');
+const mensajes = new Mensajes();
 
 app.get('/', async (req, res) => {
-	const productos = products.getAll();
-	// const productos = [];
+  const productos = await products.getAll();
 
-	let messages = await mensajes.getAll();
 
-	res.render('main', { title: 'Productos', productos, messages });
+  let messages = await mensajes.getAll();
+
+  res.render('main', { title: 'Productos', productos, messages });
 });
 
-io.on('connection', socket => {
-	console.log('New conection', socket.id);
+io.on('connection', (socket) => {
+  console.log('New conection', socket.id);
 
-	socket.on('disconnect', () => {
-		console.log(socket.id, 'disconnected');
-	});
+  socket.on('disconnect', () => {
+    console.log(socket.id, 'disconnected');
+  });
 
-	socket.on('add-product', product => {
-		// console.log(product);
+  socket.on('add-product', (product) => {
+    // console.log(product);
 
-		products.addProduct(product);
+    products.addProduct(product);
 
-		io.emit('update-products', product);
-	});
+    io.emit('update-products', product);
+  });
 
-	socket.on('message', async message => {
-		const data = {
-			email: message.email,
-			message: message.message,
-			date: new Date().toLocaleString(),
-		};
+  socket.on('message', async (message) => {
+    const data = {
+      email: message.email,
+      message: message.message,
+      date: new Date().toLocaleString(),
+    };
 
-		await mensajes.save(data);
+    await mensajes.save(data);
 
-		io.emit('message', data);
-	});
+    io.emit('message', data);
+  });
 });
 
 app.use((err, req, res, next) => {
-	console.log(err);
-	res.status(500).json({ err, message: 'Something went wrong, sorry' });
+  console.log(err);
+  res.status(500).json({ err, message: 'Something went wrong, sorry' });
 });
 
 const PORT = process.env.PORT || 8080;
 
 server.listen(PORT, () => {
-	console.log(`Servidor corriendo en puerto http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en puerto http://localhost:${PORT}`);
 });
 
-server.on('error', err => {
-	console.log(`Algo salio mal: ${err}`);
+server.on('error', (err) => {
+  console.log(`Algo salio mal: ${err}`);
 });

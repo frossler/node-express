@@ -1,72 +1,50 @@
+const { mysql } = require('./database/config');
+const knex = require('knex')(mysql);
+
 class Productos {
-	productos = [
-		{
-			title: 'Castillo Embrujado',
-			price: 1500,
-			thumbnail:
-				'https://cdn3.iconfinder.com/data/icons/fantasy-and-role-play-game-adventure-quest/512/Castle-256.png',
-			id: 1,
-		},
-		{
-			title: 'Casco Legendario',
-			price: 500,
-			thumbnail:
-				'https://cdn3.iconfinder.com/data/icons/fantasy-and-role-play-game-adventure-quest/512/Helmet.jpg-256.png',
-			id: 2,
-		},
-	];
+  async addProduct(newData) {
+    try {
+      await knex('products').insert({
+        title: newData.title,
+        price: newData.price,
+        thumbnail: newData.thumbnail,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-	generateId() {
-		const lastProduct = this.productos[this.productos.length - 1];
-		console.log(lastProduct);
-		let id = 1;
-		if (lastProduct) {
-			id = lastProduct.id + 1;
-		}
+  async getById(id) {
+    try {
+      const product = await knex('products').where({ id });
 
-		return id;
-	}
+      return product;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async update(id, data) {
+    try {
+      return await knex('products').where({ id }).update(
+        {
+          title: data.title,
+          price: data.price,
+          thumbnail: data.thumbnail,
+        },
+        '*'
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-	addProduct(newData) {
-		newData.id = this.generateId();
+  async getAll() {
+    return await knex('products');
+  }
 
-		this.productos.push(newData);
-
-		return this.productos;
-	}
-
-	getById(id) {
-		return this.productos.find(product => product.id === parseInt(id));
-	}
-
-	update(id, data) {
-		let updatedProduct;
-
-		const updatedProducts = this.productos.map(product => {
-			if (product.id === parseInt(id)) {
-				product = Object.assign(product, data);
-
-				updatedProduct = product;
-			}
-			return product;
-		});
-
-		this.productos = updatedProducts;
-
-		return updatedProduct;
-	}
-
-	getAll() {
-		return this.productos;
-	}
-
-	deleteById(id) {
-		const newProducts = this.productos.filter(product => product.id !== parseInt(id));
-
-		this.productos = newProducts;
-
-		return this.productos;
-	}
+  async deleteById(id) {
+    await knex('products').where({ id }).del();
+  }
 }
 
 module.exports = Productos;
