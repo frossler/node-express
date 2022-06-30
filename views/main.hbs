@@ -35,24 +35,42 @@
 	<form id="messages">
 
 		<label for="email">Email</label>
-		<input type="text" id="email">
-		<label for="message"></label>
-		<input type="text" id="message">
+		<input type="text" id="email" name="email">
+
+		<label for="message">Mensaje</label>
+		<input type="text" id="message" name="message">
+
+		<label for="age">Edad</label>
+		<input type="number" id="age" name="age">
+
+		<label for="alias">Alias</label>
+		<input type="text" id="alias" name="alias">
+
+		<label for="avatar">Avatar</label>
+		<input type="text" id="avatar" name="avatar">
+
+		<label for="name">Nombre</label>
+		<input type="text" id="name" name="name">
+
+		<label for="lastname">Apellido</label>
+		<input type="text" id="lastname" name="lastname">
+
 		<button type="submit">Submit</button>
 	</form>
 	<div id="errors">
 
 	</div>
 	<hr>
+	<div id="compression"></div>
 	<div >
 		<ul id="chat">
 		{{#if messages}}
 		
 			{{#each messages}}
 				<li>
-					<span style="color: blue; font-weight: 600;">{{this.email}}: </span>
+					<span style="color: blue; font-weight: 600;">{{this.author.id}}: </span>
 					<span style="color: brown;">[{{this.date}}]</span>
-					<span style="color: green; font-style: italic;">{{this.message}}</span>
+					<span style="color: green; font-style: italic;">{{this.text}}</span>
 				</li>
 			{{/each}}
 		{{else}}
