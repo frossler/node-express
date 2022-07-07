@@ -14,22 +14,14 @@ const message = new schema.Entity('messages', {
 const messagesSchema = new schema.Array(message);
 
 async function fetchMessagesAndUpdateUI() {
-  const normalizedMsg = await (await fetch('/api/messages')).json();
+  const messages = await (await fetch('/api/messages')).json();
 
-  const messages = denormalize(normalizedMsg.result, messagesSchema, normalizedMsg.entities);
 
   const template = Handlebars.compile(
     '<span style="color: blue; font-weight: 600;">{{this.author.id}}: </span><span style="color: brown;">[{{this.date}}] </span><span style="color: green; font-style: italic;">{{this.text}}</span>'
   );
 
-  const normalizedLength = JSON.stringify(normalizedMsg).length;
-  const messagesLength = JSON.stringify(messages).length;
 
-  console.log(normalizedLength, messagesLength);
-
-  const compression = Math.round(((messagesLength - normalizedLength) / messagesLength) * 100);
-
-  compressionDiv.textContent = `Compression: %${compression}`;
 
   const elements = messages.map((message) => {
     const li = document.createElement('li');

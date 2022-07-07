@@ -1,15 +1,31 @@
-<form id="form">
-	<label for='title'>Title</label>
-	<input type='text' name='title' id='title' />
-	<label for='price'>Price</label>
-	<input type='number' name='price' id='price' />
-	<label for='price'>Thumbnail</label>
-	<input type='text' name='thumbnail' id='thumbnail' />
-	<input type='submit' value='submit' />
+<div class="container-md mt-3">
+		
+	{{#if user}}
+	 <div class="alert alert-primary row">
+			<span class="col">
+			Bienvenido {{user.name}}
+			</span> 
+		 <a class="btn btn-info col" href="/logout">Logout</a>
+	 </div>
+	 {{/if}}
+<div class="card mt-3">
+	<h2 class="card-header">Agregar Productos</h2>
+<form id="form" class="card-body">
+	<label for='title' class="form-label">Titulo</label>
+	<input type='text' name='title' id='title' class="form-control" />
+	<label for='price' class="form-label">Precio</label>
+	<input type='number' name='price' id='price' class="form-control" />
+	<label for='price' class="form-label">Imagen</label>
+	<input type='text' name='thumbnail' id='thumbnail' class="form-control" />
+	<input type='submit' value='Crear' class="btn btn-primary mt-3"/>
 </form>
-<div >
+</div>
+<div class="card mt-3">
+	<h2 class="card-header">Productos</h2>
+	<div class="card-body">
+
 	{{#if productos}}
-        <table id="table">
+        <table id="table" class="table">
             <tr>
                 <th>Nombre</th>
                 <th>Precio</th>
@@ -28,40 +44,65 @@
 	{{else}}
 		<span>No hay productos</span>
 	{{/if}}
+	</div>
+
 </div>
 
-<div>
-	<h1>Chat</h1>
-	<form id="messages">
 
-		<label for="email">Email</label>
-		<input type="text" id="email" name="email">
+<div class="card mt-3">
 
-		<label for="message">Mensaje</label>
-		<input type="text" id="message" name="message">
 
-		<label for="age">Edad</label>
-		<input type="number" id="age" name="age">
+	<h2 class="card-header">Chat</h2>
+	<div class='card-body'>
 
-		<label for="alias">Alias</label>
-		<input type="text" id="alias" name="alias">
+	
+	<form id="messages" class="row align-items-center">
 
-		<label for="avatar">Avatar</label>
-		<input type="text" id="avatar" name="avatar">
+		
 
-		<label for="name">Nombre</label>
-		<input type="text" id="name" name="name">
+		<div class="col">
+			<div>
 
-		<label for="lastname">Apellido</label>
-		<input type="text" id="lastname" name="lastname">
+			<label for="email" class="form-label">Email</label>
+			<input type="text" id="email" name="email" class="form-control">
+			</div>
+		
+			<div>
+					<label for="lastname" class="form-label">Apellido</label>
+		<input type="text" id="lastname" name="lastname" class="form-control">
+	
+			</div>
+		</div>
 
-		<button type="submit">Submit</button>
+
+	<div class="col">
+		<label for="age" class="form-label">Edad</label>
+		<input type="number" id="age" name="age" class="form-control">
+
+		<label for="alias" class="form-label">Alias</label>
+		<input type="text" id="alias" name="alias" class="form-control">
+	</div>
+		<div class="col">
+		<label for="avatar" class="form-label">Avatar</label>
+		<input type="text" id="avatar" name="avatar" class="form-control">
+	
+		<label for="name" class="form-label">Nombre</label>
+		<input type="text" id="name" name="name" class="form-control">
+	</div>
+	<div>
+
+		<label for="message" class="form-label">Mensaje</label>
+		<textarea type="text" id="message" name="message" class="form-control"></textarea>
+
+		<button type="submit" class="btn btn-warning mt-3 btn-lg">Enviar Mensaje</button>
+	</div>
 	</form>
+	</div>
 	<div id="errors">
 
 	</div>
 	<hr>
-	<div id="compression"></div>
+
 	<div >
 		<ul id="chat">
 		{{#if messages}}
@@ -79,4 +120,8 @@
 		</ul>
 
 	</div>
+
+
 </div>
+</div>
+    <script src='/js/client.js'></script>

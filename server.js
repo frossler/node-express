@@ -1,12 +1,12 @@
 const express = require('express');
 const { engine: handlebars } = require('express-handlebars');
-const http = require('http');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const mongoose = require('mongoose');
 const { Server } = require('socket.io');
 const Productos = require('./Productos');
 const Mensajes = require('./Mensajes');
-const { default: faker } = require('@faker-js/faker');
-const { normalize, schema } = require('normalizr');
-const util = require('util');
+const http = require('http');
 
 const app = express();
 const server = http.createServer(app);
@@ -28,39 +28,77 @@ app.set('views', __dirname + '/views');
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  session({
+    secret: 'foo',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+      maxAge: 1000 * 60,
+    },
+    store: MongoStore.create({
+      mongoUrl:
+        'mongodb://fran:proyectocoder@cluster1-shard-00-00.zzoqs.mongodb.net:27017,cluster1-shard-00-01.zzoqs.mongodb.net:27017,cluster1-shard-00-02.zzoqs.mongodb.net:27017/test?replicaSet=atlas-wwir4a-shard-0&ssl=true&authSource=admin',
+      dbName: 'ecommerce',
+      collectionName: 'sessions',
+    }),
+  })
+);
+
+app.use((req, res, next) => {
+  if (req.session.user) {
+    res.locals.user = req.session.user;
+  }
+
+  next();
+});
 
 const products = new Productos();
 const mensajes = new Mensajes();
 
-// Normalizr
-
-const author = new schema.Entity('authors');
-
-const message = new schema.Entity('messages', {
-  author: author,
-});
-
-const messagesSchema = new schema.Array(message);
-
-function print(data) {
-  console.log(util.inspect(data, false, 12, true));
-}
-
 app.get('/api/messages', async (req, res) => {
   const messages = await mensajes.getAll();
 
-  res.json(normalize(messages, messagesSchema))
-})
+  res.json(messages, messagesSchema);
+});
 
 app.get('/', async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
+
   const productos = await products.getAll();
 
   let messages = await mensajes.getAll();
 
-  // console.log(messages);
-  // print(normalize(messages, messagesSchema));
-
   res.render('main', { title: 'Productos', productos, messages });
+});
+
+app.get('/login', async (req, res) => {
+  res.render('login', { title: 'Login' });
+});
+
+app.post('/login', async (req, res) => {
+  console.log(req.body);
+  if (!req.body.name) {
+    return res.json({
+      error: true,
+      message: 'Nombre es requerido',
+    });
+  }
+
+  req.session.user = { name: req.body.name };
+
+  return res.json({
+    redirect: '/',
+  });
+});
+
+app.get('/logout', async (req, res) => {
+  if (!req.session.user) return res.redirect('/login');
+  const name = req.session.user.name;
+  req.session.destroy();
+  res.render('logout', { title: 'Logout', name });
 });
 
 app.get('/api/productos-test', async (req, res) => {
@@ -102,7 +140,7 @@ io.on('connection', (socket) => {
         avatar: message.author.avatar,
       },
       text: message.text,
-      date: new Date()
+      date: new Date(),
     };
 
     // console.log(message);
