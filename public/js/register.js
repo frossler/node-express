@@ -11,7 +11,7 @@ form.addEventListener('submit', async (e) => {
          password: passwordInput.value,
       });
 
-      await fetch('login', {
+      await fetch('register', {
          method: 'POST',
          body: JSON.stringify({
             email: emailInput.value,

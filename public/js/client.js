@@ -1,44 +1,38 @@
+
 const socket = io();
 
-const { schema, denormalize } = normalizr;
+
 
 const chat = document.querySelector('#chat');
 const compressionDiv = document.querySelector('#compression');
 
-const author = new schema.Entity('authors');
-
-const message = new schema.Entity('messages', {
-  author: author,
-});
-
-const messagesSchema = new schema.Array(message);
 
 async function fetchMessagesAndUpdateUI() {
-  const messages = await (await fetch('/api/messages')).json();
+   const messages = await (await fetch('/api/messages')).json();
 
 
-  const template = Handlebars.compile(
-    '<span style="color: blue; font-weight: 600;">{{this.author.id}}: </span><span style="color: brown;">[{{this.date}}] </span><span style="color: green; font-style: italic;">{{this.text}}</span>'
-  );
+   const template = Handlebars.compile(
+      '<span style="color: blue; font-weight: 600;">{{this.author.id}}: </span><span style="color: brown;">[{{this.date}}] </span><span style="color: green; font-style: italic;">{{this.text}}</span>'
+   );
 
 
 
-  const elements = messages.map((message) => {
-    const li = document.createElement('li');
-    li.innerHTML = template(message);
+   const elements = messages.map((message) => {
+      const li = document.createElement('li');
+      li.innerHTML = template(message);
 
-    return li;
-  });
+      return li;
+   });
 
-  chat.innerHTML = '';
+   chat.innerHTML = '';
 
-  elements.forEach((element) => {
-    chat.appendChild(element);
-  });
+   elements.forEach((element) => {
+      chat.appendChild(element);
+   });
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  fetchMessagesAndUpdateUI();
+   fetchMessagesAndUpdateUI();
 });
 
 const form = document.querySelector('#form');
@@ -49,32 +43,32 @@ const thumbnailInput = document.querySelector('#thumbnail');
 const table = document.querySelector('#table');
 
 form.addEventListener('submit', (e) => {
-  e.preventDefault();
+   e.preventDefault();
 
-  if (titleInput.value && priceInput.value && thumbnailInput.value) {
-    const product = {
-      title: titleInput.value,
-      price: priceInput.value,
-      thumbnail: thumbnailInput.value,
-    };
+   if (titleInput.value && priceInput.value && thumbnailInput.value) {
+      const product = {
+         title: titleInput.value,
+         price: priceInput.value,
+         thumbnail: thumbnailInput.value,
+      };
 
-    socket.emit('add-product', product);
-    titleInput.value = '';
-    priceInput.value = '';
-    thumbnailInput.value = '';
-  }
+      socket.emit('add-product', product);
+      titleInput.value = '';
+      priceInput.value = '';
+      thumbnailInput.value = '';
+   }
 });
 
 socket.on('update-products', (product) => {
-  const template = Handlebars.compile(
-    "<td>{{title}}</td><td>{{price}}</td><td><img src={{thumbnail}} style='width:50px;'></img></td>"
-  );
+   const template = Handlebars.compile(
+      "<td>{{title}}</td><td>{{price}}</td><td><img src={{thumbnail}} style='width:50px;'></img></td>"
+   );
 
-  const tr = document.createElement('tr');
+   const tr = document.createElement('tr');
 
-  tr.innerHTML = template(product);
+   tr.innerHTML = template(product);
 
-  table.appendChild(tr);
+   table.appendChild(tr);
 });
 
 const messageForm = document.querySelector('#messages');
@@ -89,46 +83,46 @@ const avatarInput = document.querySelector('#avatar');
 const errors = document.querySelector('#errors');
 
 const inputs = [
-  emailInput,
-  messageInput,
-  nameInput,
-  lastNameInput,
-  aliasInput,
-  ageInput,
-  avatarInput,
+   emailInput,
+   messageInput,
+   nameInput,
+   lastNameInput,
+   aliasInput,
+   ageInput,
+   avatarInput,
 ];
 
 messageForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  errors.innerHTML = '';
+   e.preventDefault();
+   errors.innerHTML = '';
 
-  inputs.forEach((input) => {
-    if (!input.value) {
-      const error = document.createElement('p');
-      error.innerHTML = `${input.name} es requerido`;
+   inputs.forEach((input) => {
+      if (!input.value) {
+         const error = document.createElement('p');
+         error.innerHTML = `${input.name} es requerido`;
 
-      errors.append(error);
-    }
-  });
+         errors.append(error);
+      }
+   });
 
-  if (messageInput.value && emailInput.value) {
-    const message = {
-      author: {
-        id: emailInput.value,
-        nombre: nameInput.value,
-        apellido: lastNameInput.value,
-        alias: aliasInput.value,
-        edad: ageInput.value,
-        avatar: avatarInput.value,
-      },
-      text: messageInput.value,
-    };
-    socket.emit('message', message);
+   if (messageInput.value && emailInput.value) {
+      const message = {
+         author: {
+            id: emailInput.value,
+            nombre: nameInput.value,
+            apellido: lastNameInput.value,
+            alias: aliasInput.value,
+            edad: ageInput.value,
+            avatar: avatarInput.value,
+         },
+         text: messageInput.value,
+      };
+      socket.emit('message', message);
 
-    inputs.forEach((input) => (input.value = ''));
-  }
+      inputs.forEach((input) => (input.value = ''));
+   }
 });
 
 socket.on('message', (message) => {
-  fetchMessagesAndUpdateUI();
+   fetchMessagesAndUpdateUI();
 });
